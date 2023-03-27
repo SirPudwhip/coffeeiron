@@ -5,8 +5,6 @@ from sqlalchemy import Column, DateTime, Integer, String, Boolean, ForeignKey
 
 from sqlalchemy.ext.declarative import declarative_base
 
-engine = create_engine('sqlite:///drinks.db')
-
 Base = declarative_base()
 
 class Drinks(Base):
