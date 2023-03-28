@@ -20,11 +20,11 @@ class Drinks(Base):
             + f"{self.name}, " 
 
 
-class Add(Base):
-    __tablename__ = 'add'
+class Add_Drinks(Base):
+    __tablename__ = 'add_drinks'
 
     id = Column(Integer(), primary_key=True)
-    drink_id = Column(Integer(), ForeignKey('drinks.id'))
+    drink_name = Column(String(), ForeignKey('drinks.name'))
     size = Column(String())
     hot = Column(Boolean())
 
