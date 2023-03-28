@@ -11,10 +11,47 @@ if __name__ == '__main__':
     Session = sessionmaker(bind=engine)
     session = Session()
 
+    d_1 = Drinks(name="Big Mama", description="caramel, chocolate, and marshmallow flavor", price=8)
+    d_2 = Drinks(name="Gentle Christmas", description="lavendar and mint", price=7) 
+    d_3 = Drinks(name="Matcha Latte", description="matcha", price=6)
+
+    a_1 = Add(drink_id = 1, size = "M", hot = True)
+
+    session.add(a_1)
+    session.commit()
+    session.close()
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     # drinks = []
-    d_1 = Drinks(name="Big Mama", description="caramel, chocolate, and marshmallow flavor", hot=True, size="Large", price=8)
-    d_2 = Drinks(name="Gentle Christmas", description="lavendar and mint", hot=True, size="Small", price=7) 
-    d_3 = Drinks(name="Matcha Latte", description="matcha", hot=True, size="Small", price=6)
+
 
     
 
@@ -27,28 +64,21 @@ if __name__ == '__main__':
 #     phone = Column(Integer())
 
     #customers:
-    c_1 = Customers(name="Mark Twain", email="mark_twain@cloud.com", phone=2234554343)
-    c_2 = Customers(name="Sarah Johnson", email="sarahj@cloud.com", phone=2254545656)
-    c_3 = Customers(name="Blair Rich", email="blair_rich@cloud.com", phone=2234552323)
+    # c_1 = Customers(name="Mark Twain", email="mark_twain@cloud.com", phone=2234554343)
+    # c_2 = Customers(name="Sarah Johnson", email="sarahj@cloud.com", phone=2254545656)
+    # c_3 = Customers(name="Blair Rich", email="blair_rich@cloud.com", phone=2234552323)
     
 
-    session.add(d_1)
-    session.commit()
+    # session.add(d_1)
+    # session.commit()
     # drinks.append(d_1)
 
-    # query = session.query(Drinks).filter(Drinks.name == "Big Mama")        
 
-    # retrieve first matching record as object
-    # big_mama = query.first()
-
-    # delete record
-    # session.delete(big_mama)
-    # session.commit()
     # session.query(Review).delete()
 
     # fake = Faker()
 
-    session.close()
+
 
 
 

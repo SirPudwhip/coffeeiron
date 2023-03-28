@@ -10,11 +10,15 @@ session = Session()
 class CLI: 
     def __init__(self, user_input):
         self.drinks = [drink for drink in session.query(Drinks)]
-        self.customers = [customer for customer in session.query(Customers)]
+        self.add = [add for add in session.query(Add)]
+        # self.customers = [customer for customer in session.query(Customers)]
         self.name = user_input
         self.start()
 
     def start(self):
+        session.add(Add(drink_id = 1, size = "M", hot = False))
+        session.commit()
+
         print(' ')
         print(f'***** Welcome To The Coffee Shop {self.name} *****')
         print(' ')
