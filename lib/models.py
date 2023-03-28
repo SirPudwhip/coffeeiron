@@ -2,9 +2,9 @@ from datetime import datetime
 
 from sqlalchemy import create_engine, desc
 from sqlalchemy import Column, DateTime, Integer, String, Boolean, ForeignKey
-
 from sqlalchemy.ext.declarative import declarative_base
 
+engine = create_engine('sqlite:///coffeeiron.db')
 Base = declarative_base()
 
 class Drinks(Base):
@@ -17,10 +17,11 @@ class Drinks(Base):
     size = Column(String())
     price = Column(Integer())
 
-    # def __repr__(self):
-    #     return f"Student {self.id}: " \
-    #         + f"{self.name}, " \
-    #         + f"Grade {self.grade}"
+
+
+    def __repr__(self):
+        return f"Drink ID {self.id}: " \
+            + f"{self.name}, " 
 
 class Customers(Base):
     __tablename__ = 'customers'
