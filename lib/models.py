@@ -13,27 +13,32 @@ class Drinks(Base):
     id = Column(Integer(), primary_key=True)
     name = Column(String(), index=True)
     description = Column(String())
-    hot = Column(Boolean())
-    size = Column(String())
     price = Column(Integer())
-
-
 
     def __repr__(self):
         return f"Drink ID {self.id}: " \
             + f"{self.name}, " 
 
-class Customers(Base):
-    __tablename__ = 'customers'
-
-    id = Column(Integer(), primary_key=True)
-    name = Column(String(), index=True)
-    email = Column(String())
-    phone = Column(Integer())
 
 class Orders(Base):
     __tablename__ = 'orders'
     
     id = Column(Integer(), primary_key=True)
+    hot = Column(Boolean())
+    size = Column(String())
+    total_price = Column(Integer())
     drink_id = Column(Integer(), ForeignKey('drinks.id'))
-    customer_id = Column(Integer(), ForeignKey('customers.id'))
+    
+
+
+
+
+
+
+# class Customers(Base):
+#     __tablename__ = 'customers'
+
+#     id = Column(Integer(), primary_key=True)
+#     name = Column(String(), index=True)
+#     email = Column(String())
+#     phone = Column(Integer())

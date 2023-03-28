@@ -16,6 +16,7 @@ if __name__ == '__main__':
     d_2 = Drinks(name="Gentle Christmas", description="lavendar and mint", hot=True, size="Small", price=7) 
     d_3 = Drinks(name="Matcha Latte", description="matcha", hot=True, size="Small", price=6)
 
+    
 
 # Customers(Base):
 #     __tablename__ = 'customers'
@@ -31,11 +32,18 @@ if __name__ == '__main__':
     c_3 = Customers(name="Blair Rich", email="blair_rich@cloud.com", phone=2234552323)
     
 
-    session.add_all([d_1, d_2, d_3])
+    session.add(d_1)
     session.commit()
     # drinks.append(d_1)
 
-    # session.query(Game).delete()
+    # query = session.query(Drinks).filter(Drinks.name == "Big Mama")        
+
+    # retrieve first matching record as object
+    # big_mama = query.first()
+
+    # delete record
+    # session.delete(big_mama)
+    # session.commit()
     # session.query(Review).delete()
 
     # fake = Faker()
