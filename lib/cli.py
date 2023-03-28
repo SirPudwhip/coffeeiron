@@ -56,8 +56,14 @@ class CLI:
         field = input("Specification to update: ")
         value = input("New specification: ")
 
+        
         first_query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)
-        first_query.update({Add_Drinks.size: value})
+        if field == "size":
+            first_query.update({Add_Drinks.size: value})
+        # elif field == "hot":
+            # temp_value = first_query.hot 
+            # temp_value = 
+            # first_query.update({Add_Drinks.hot: })
         session.commit()
 
         # stmt = (
