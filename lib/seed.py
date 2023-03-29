@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+from datetime import datetime
 # from faker import Faker
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
@@ -15,9 +15,11 @@ if __name__ == '__main__':
     d_2 = Drinks(name="Gentle Christmas", description="lavendar and mint", price=7) 
     d_3 = Drinks(name="Matcha Latte", description="matcha", price=6)
 
-    a_1 = Add(drink_id = 1, size = "M", hot = True)
+    a_1 = Add_Drinks(drink_name = 1, size = "M", hot = True)
 
-    session.add(a_1)
+    o_1 = Orders(total_price = 10)
+
+    session.add(o_1)
     session.commit()
     session.close()
 

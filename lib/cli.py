@@ -16,9 +16,11 @@ class CLI:
         self.start()
 
     def start(self):
-        # session.add(Add_Drinks(drink_name = "Big Mama", size = "M", hot = False))
-        # session.commit()
 
+        new_order = Orders()
+        session.add(new_order)
+        session.commit()
+    
         print(' ')
         print(f'***** Welcome To The Coffee Shop {self.name} *****')
         print(' ')
@@ -29,7 +31,7 @@ class CLI:
                 for drink in self.drinks:
                     print(f"{drink.name}: {drink.description}")
             elif choice == "add":
-                self.add_item()
+                self.add_item(new_order)
                 print("Your item has been added!")
             elif choice == "modify":
                 self.modify_item()
@@ -39,13 +41,28 @@ class CLI:
                 choice == "exit"
                 exit = True
 
-    def add_item(self):
+    # def new_start(self):
+    #     print("Building New Order")
+
+    def set_price(self, drink, size):
+        query = session.query(Drinks).filter(Drinks.name == drink)
+        searched_drink = query.first()
+        if size == "medium":
+            return searched_drink.price + 1
+        elif size =="large":
+            return searched_drink.price + 2
+        else:
+            return searched_drink.price
+
+    def add_item(self, new_order):
+        print(new_order)
         name = input("Drink name: ")
         size = input("Size: ")
+        size_price = self.set_price(name, size)
         hot = input("Hot? (y/n) : ")
         temp = True if hot == "y" else False
         
-        session.add(Add_Drinks(drink_name = name, size = size, hot = temp ))
+        session.add(Add_Drinks(drink_name = name, size = size, hot = temp, order_number = new_order.id, size_price = size_price))
         session.commit()
 
     def modify_item(self):
@@ -73,7 +90,6 @@ class CLI:
             print("Invalid field. Please enter 'size', 'hot', or 'drink name'.")
 
         session.commit()
-
 
     def delete_item(self):
         selection = input("Item ID: ")

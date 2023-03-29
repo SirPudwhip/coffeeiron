@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import create_engine, desc
+from sqlalchemy import create_engine, desc, func
 from sqlalchemy import Column, DateTime, Integer, String, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -28,34 +28,27 @@ class Add_Drinks(Base):
     drink_name = Column(String(), ForeignKey('drinks.name'))
     size = Column(String())
     hot = Column(Boolean())
+    order_number = Column(Integer(), ForeignKey('orders.id'))
+    size_price = Column(Integer())
 
     def __repr__(self):
-        return f"Add ID {self.id},: " +\
+        return f"Add ID {self.id}: " +\
             f"{self.drink_name}" +\
             f"{self.size}" +\
             f"{self.hot}" 
 
 
-# class Orders(Base):
-#     __tablename__ = 'orders'
+class Orders(Base):
+    __tablename__ = 'orders'
     
-#     id = Column(Integer(), primary_key=True)
-#     hot = Column(Boolean())
-#     size = Column(String())
-#     total_price = Column(Integer())
-#     drink_id = Column(Integer(), ForeignKey('drinks.id'))
-    
+    id = Column(Integer(), primary_key=True)
+    ordered_at = Column(DateTime(), server_default=func.now())
+    total_price = Column(Integer())
 
-# Get the "Drinks" table from the model class
-# drinks_table = Drinks.__table__
-
-# # Alter the "description" column to remove it
-# drinks_table.c.size.alter(nullable=True)
-
-# # Commit the changes to the database
-# session.commit()
-
-
+    def __repr__(self):
+        return f"Orders ID {self.id}: " +\
+            f"{self.ordered_at}" +\
+            f"{self.total_price}"
 
 
 # class Customers(Base):
