@@ -11,6 +11,7 @@ class CLI:
     def __init__(self, user_input):
         self.drinks = [drink for drink in session.query(Drinks)]
         self.add_drinks = [add for add in session.query(Add_Drinks)]
+        self.orders = [order for order in session.query(Orders)]
         # self.customers = [customer for customer in session.query(Customers)]
         self.name = user_input
         self.start()
@@ -27,9 +28,15 @@ class CLI:
         exit = False
         while exit == False:
             choice = input("Type 'list', 'add', 'modify', or 'delete': ")
-            if choice == "list":
+            if choice == "list drinks":
                 for drink in self.drinks:
                     print(f"{drink.name}: {drink.description}")
+            elif choice == "list orders":
+                for order in self.orders:
+                    print(f"{order.id}, {order.}")
+                    for drink in self.add_drinks:
+                        if drink.order
+                        print(f"{drink.drink_name}")  
             elif choice == "add":
                 self.add_item(new_order)
                 print("Your item has been added!")
@@ -45,6 +52,8 @@ class CLI:
     #     print("Building New Order")
 
     def set_price(self, drink, size):
+        print(drink)
+        print(size)
         query = session.query(Drinks).filter(Drinks.name == drink)
         searched_drink = query.first()
         if size == "medium":
@@ -53,6 +62,7 @@ class CLI:
             return searched_drink.price + 2
         else:
             return searched_drink.price
+        session.commit()
 
     def add_item(self, new_order):
         print(new_order)
@@ -71,6 +81,7 @@ class CLI:
         value = input("New specification: ")
 
         first_query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)
+        reconfigure = first_query.first()
         if field == "size":
             first_query.update({Add_Drinks.size: value})
             print("Item modified")
@@ -90,6 +101,14 @@ class CLI:
             print("Invalid field. Please enter 'size', 'hot', or 'drink name'.")
 
         session.commit()
+
+        
+        drinks_arg = reconfigure.drink_name
+        size_arg = reconfigure.size
+        new_price = self.set_price(drinks_arg, size_arg)
+        first_query.update({Add_Drinks.size_price: new_price})
+        session.commit()
+
 
     def delete_item(self):
         selection = input("Item ID: ")
