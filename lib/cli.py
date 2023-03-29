@@ -16,6 +16,15 @@ class CLI:
         self.name = user_input
         self.start()
 
+    def set_total_price(self, new_order):
+        price_list = [drink_obj.size_price for drink_obj in session.query(Add_Drinks).filter(Add_Drinks.order_number == new_order.id)]
+        price_total = 10
+        query = session.query(Orders).filter(Orders.id == new_order.id)
+        print(query)
+        order_selection = query.first()
+        print(order_selection)
+        order_selection.update({Orders.total_price: price_total})
+
     def start(self):
 
         new_order = Orders()
@@ -27,16 +36,17 @@ class CLI:
         print(' ')
         exit = False
         while exit == False:
-            choice = input("Type 'list', 'add', 'modify', or 'delete': ")
+
+            choice = input("Type 'list orders', 'list drinks', 'add', 'modify', or 'delete': ")
             if choice == "list drinks":
                 for drink in self.drinks:
                     print(f"{drink.name}: {drink.description}")
             elif choice == "list orders":
                 for order in self.orders:
-                    print(f"{order.id}, {order.}")
-                    for drink in self.add_drinks:
-                        if drink.order
-                        print(f"{drink.drink_name}")  
+                    print(f"{order.id}. {order.ordered_at}")
+                    for add_drink in self.add_drinks:
+                        if add_drink.order_number == order.id:
+                            print(f"{add_drink.drink_name}")  
             elif choice == "add":
                 self.add_item(new_order)
                 print("Your item has been added!")
@@ -48,8 +58,12 @@ class CLI:
                 choice == "exit"
                 exit = True
 
+            self.set_total_price(new_order)
+
     # def new_start(self):
     #     print("Building New Order")
+
+
 
     def set_price(self, drink, size):
         print(drink)
