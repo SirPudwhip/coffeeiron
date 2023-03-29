@@ -17,17 +17,11 @@ class CLI:
         self.start()
 
     def set_total_price(self, new_order):
-        price_list = [drink_obj.size_price for drink_obj in session.query(Add_Drinks).filter(Add_Drinks.order_number == new_order.id)]
-        price_total = 10
-        query = session.query(Orders).filter(Orders.id == new_order.id)
-        print(query)
-        order_selection = query.first()
-        print(order_selection)
-        order_selection.update({Orders.total_price: price_total})
+        pass
 
     def start(self):
 
-        new_order = Orders()
+        new_order = Orders(total_price = 0)
         session.add(new_order)
         session.commit()
     
@@ -36,6 +30,12 @@ class CLI:
         print(' ')
         exit = False
         while exit == False:
+            price_list = [drink_obj.size_price for drink_obj in session.query(Add_Drinks).filter(Add_Drinks.order_number == new_order.id)]
+        
+            price_total = sum(price_list)
+            query = session.query(Orders).filter(Orders.id == new_order.id)
+            query.update({Orders.total_price: price_total})
+            session.commit()
 
             choice = input("Type 'list orders', 'list drinks', 'add', 'modify', or 'delete': ")
             if choice == "list drinks":
@@ -95,7 +95,6 @@ class CLI:
         value = input("New specification: ")
 
         first_query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)
-        reconfigure = first_query.first()
         if field == "size":
             first_query.update({Add_Drinks.size: value})
             print("Item modified")
@@ -116,7 +115,7 @@ class CLI:
 
         session.commit()
 
-        
+        reconfigure = first_query.first()
         drinks_arg = reconfigure.drink_name
         size_arg = reconfigure.size
         new_price = self.set_price(drinks_arg, size_arg)
