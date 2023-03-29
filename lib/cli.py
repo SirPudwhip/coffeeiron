@@ -33,10 +33,8 @@ class CLI:
                 print("Your item has been added!")
             elif choice == "modify":
                 self.modify_item()
-                print("You modified your item!")
             elif choice == "delete":
                 self.delete_item()
-                print("delete item")
             else:
                 choice == "exit"
                 exit = True
@@ -51,33 +49,42 @@ class CLI:
         session.commit()
 
     def modify_item(self):
-        
         selection = input("Item ID: ")
         field = input("Specification to update: ")
         value = input("New specification: ")
 
-        
         first_query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)
         if field == "size":
             first_query.update({Add_Drinks.size: value})
-        # elif field == "hot":
-            # temp_value = first_query.hot 
-            # temp_value = 
-            # first_query.update({Add_Drinks.hot: })
+            print("Item modified")
+        elif field == "hot":
+            if value.lower() == "true":
+                temp = True
+            elif value.lower() == "false":
+                temp = False
+            else:
+                print("Invalid value for hot field. Please enter 'true' or 'false'.")
+            first_query.update({Add_Drinks.hot: temp})
+            print("Item modified")
+        elif field == "drink name":
+            first_query.update({Add_Drinks.drink_name: value})
+            print("Item modified")
+        else:
+            print("Invalid field. Please enter 'size', 'hot', or 'drink name'.")
+
         session.commit()
 
-        # stmt = (
-        #     update(Add_Drinks)
-        #     .where(Add_Drinks.id == selection)
-        #     .values(field=value)
-        #     )
-
-        # print(stmt)
-        
-        print("item modified")
 
     def delete_item(self):
-        print("item deleted")
+        selection = input("Item ID: ")
+
+        query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)        
+
+        doomed_item = query.first()
+        session.delete(doomed_item)
+        session.commit()
+
+        print(f"You have deleted the {doomed_item.drink_name}")
 
     
     
@@ -92,3 +99,5 @@ if __name__ == '__main__':
     test = CLI(user_input)
 
 # import ipdb; ipdb.set_trace()
+
+

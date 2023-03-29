@@ -17,8 +17,9 @@ class Drinks(Base):
 
     def __repr__(self):
         return f"Drink ID {self.id}: " \
-            + f"{self.name}, " 
-
+            + f"{self.name}, " \
+            + f"{self.description}," \
+            + f"{self.price},"
 
 class Add_Drinks(Base):
     __tablename__ = 'add_drinks'
@@ -29,8 +30,10 @@ class Add_Drinks(Base):
     hot = Column(Boolean())
 
     def __repr__(self):
-        return f"Add ID {self.id}: " \
-            + f"{self.name}, " 
+        return f"Add ID {self.id},: " +\
+            f"{self.drink_name}" +\
+            f"{self.size}" +\
+            f"{self.hot}" 
 
 
 # class Orders(Base):
