@@ -25,22 +25,22 @@ class CLI:
         exit = False
         while exit == False:
             choice = input("Type 'new', 'list', 'modify', 'delete': ")
-            if choice == "new":
+            if choice.lower() == "new":
                 self.new_order()
-            elif choice == "modify":
+            elif choice.lower() == "modify":
                 order_obj = input("What is the ID of the order you want to modify? ")
                 order_item = (session.query(Orders).filter(Orders.id == order_obj)).first()
                 self.handle_order(order_item, "Modifying Exiting Order Number")
-            elif choice == "list":
+            elif choice.lower() == "list":
                 for order in self.orders:
                     print(f"{order.id}. {order.ordered_at}")
                     for add_drink in self.add_drinks:
                         if add_drink.order_number == order.id:
                             print(f"{add_drink.drink_name}") 
-            elif choice == "delete":
+            elif choice.lower() == "delete":
                 print(Orders)
                 self.delete_item(Orders)       
-            elif choice == "exit":
+            elif choice.lower() == "exit":
                 exit = True
 
 
@@ -65,22 +65,22 @@ class CLI:
             session.commit()
 
             choice = input("Type 'list items', 'show menu', 'add', 'modify','delete' or 'checkout': ")
-            if choice == "show menu":
+            if choice.lower() == "show menu":
                 for drink in self.drinks:
                     print(f"{drink.name}: {drink.description}")
-            elif choice == "list items":
+            elif choice.lower() == "list items":
                 self.list_items(new_order)
                 print(f"The current total is: ${price_total} ")
-            elif choice == "add":
+            elif choice.lower() == "add":
                 self.add_item(new_order)
                 print("Your item has been added!")
-            elif choice == "modify":
+            elif choice.lower() == "modify":
                 self.list_items(new_order)
                 self.modify_item()
-            elif choice == "delete":
+            elif choice.lower() == "delete":
                 self.list_items(new_order)
                 self.delete_item(Add_Drinks)
-            elif choice == "checkout":
+            elif choice.lower() == "checkout":
                 self.checkout(price_total)
                 exit = True
             else:
@@ -94,11 +94,11 @@ class CLI:
     def checkout(self, price_total):
         print (f"Your total is : ${price_total}")
         payment = input("cash or credit? ")
-        if payment == "cash":
+        if payment.lower() == "cash":
             amount = input("Enter dollar amount: $")
             cash_back = int(amount) - price_total 
             print(f"Change due : ${cash_back}")
-        elif payment == "credit":
+        elif payment.lower() == "credit":
             print("Payment accepted!")
         print("Thanks for visiting CoffeeIron! We hope to see you again soon")
 
@@ -116,9 +116,9 @@ class CLI:
         
         query = session.query(Drinks).filter(Drinks.name == drink)
         searched_drink = query.first()
-        if size == "medium":
+        if size.lower() == "medium":
             return searched_drink.price + 1
-        elif size =="large":
+        elif size.lower() =="large":
             return searched_drink.price + 2
         else:
             return searched_drink.price
@@ -141,10 +141,10 @@ class CLI:
         value = input("New specification: ")
 
         first_query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)
-        if field == "size":
+        if field.lower() == "size":
             first_query.update({Add_Drinks.size: value})
             print("Item modified")
-        elif field == "hot":
+        elif field.lower() == "hot":
             if value.lower() == "true":
                 temp = True
             elif value.lower() == "false":
@@ -153,7 +153,7 @@ class CLI:
                 print("Invalid value for hot field. Please enter 'true' or 'false'.")
             first_query.update({Add_Drinks.hot: temp})
             print("Item modified")
-        elif field == "drink name":
+        elif field.lower() == "drink name":
             first_query.update({Add_Drinks.drink_name: value})
             print("Item modified")
         else:
