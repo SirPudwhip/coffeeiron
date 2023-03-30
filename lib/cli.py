@@ -16,12 +16,11 @@ class CLI:
         self.name = user_input
         self.start()
 
-    def set_total_price(self, new_order):
-        pass
+    
 
     def start(self):
         print(' ')
-        print(f'***** Welcome To The Coffee Shop {self.name} *****')
+        print(f'***** Welcome To CoffeeIron, {self.name} *****')
         print(' ')
         exit = False
         while exit == False:
@@ -32,7 +31,7 @@ class CLI:
                 order_obj = input("What is the ID of the order you want to modify? ")
                 order_item = (session.query(Orders).filter(Orders.id == order_obj)).first()
                 self.handle_order(order_item, "Modifying Exiting Order Number")
-            elif choice == "list orders":
+            elif choice == "list":
                 for order in self.orders:
                     print(f"{order.id}. {order.ordered_at}")
                     for add_drink in self.add_drinks:
@@ -65,39 +64,56 @@ class CLI:
             query.update({Orders.total_price: price_total})
             session.commit()
 
-            choice = input("Type 'list items', 'show menu', 'add', 'modify', or 'delete': ")
+            choice = input("Type 'list items', 'show menu', 'add', 'modify','delete' or 'checkout': ")
             if choice == "show menu":
                 for drink in self.drinks:
                     print(f"{drink.name}: {drink.description}")
             elif choice == "list items":
-                for order in self.orders:
-                    if order.id == new_order.id:
-                        print(f"{order.id}. {order.ordered_at}")
-                        drink_list = session.query(Add_Drinks).filter(Add_Drinks.order_number == new_order.id)
-                        for add_drink in drink_list:
-                            print(f"{add_drink.drink_name}") 
-                        print(f"The current total is: ${price_total} ")
+                self.list_items(new_order)
+                print(f"The current total is: ${price_total} ")
             elif choice == "add":
                 self.add_item(new_order)
                 print("Your item has been added!")
             elif choice == "modify":
+                self.list_items(new_order)
                 self.modify_item()
             elif choice == "delete":
+                self.list_items(new_order)
                 self.delete_item(Add_Drinks)
+            elif choice == "checkout":
+                self.checkout(price_total)
+                exit = True
             else:
-                choice == "exit"
                 exit = True
 
-            self.set_total_price(new_order)
+            
 
     # def new_start(self):
     #     print("Building New Order")
 
+    def checkout(self, price_total):
+        print (f"Your total is : ${price_total}")
+        payment = input("cash or credit? ")
+        if payment == "cash":
+            amount = input("Enter dollar amount: $")
+            cash_back = int(amount) - price_total 
+            print(f"Change due : ${cash_back}")
+        elif payment == "credit":
+            print("Payment accepted!")
+        print("Thanks for visiting CoffeeIron! We hope to see you again soon")
 
+
+    def list_items(self, new_order):
+        for order in self.orders:
+            if order.id == new_order.id:
+                print(f"{order.id}. {order.ordered_at}")
+                drink_list = session.query(Add_Drinks).filter(Add_Drinks.order_number == new_order.id)
+                for add_drink in drink_list:
+                    print(f"{add_drink.id}. {add_drink.drink_name}") 
+                        
 
     def set_price(self, drink, size):
-        print(drink)
-        print(size)
+        
         query = session.query(Drinks).filter(Drinks.name == drink)
         searched_drink = query.first()
         if size == "medium":
@@ -106,7 +122,7 @@ class CLI:
             return searched_drink.price + 2
         else:
             return searched_drink.price
-        session.commit()
+       
 
     def add_item(self, new_order):
         print(new_order)
