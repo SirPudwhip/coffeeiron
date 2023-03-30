@@ -20,13 +20,41 @@ class CLI:
         pass
 
     def start(self):
+        print(' ')
+        print(f'***** Welcome To The Coffee Shop {self.name} *****')
+        print(' ')
+        exit = False
+        while exit == False:
+            choice = input("Type 'new', 'list', 'modify', 'delete': ")
+            if choice == "new":
+                self.new_order()
+            elif choice == "modify":
+                order_obj = input("What is the ID of the order you want to modify? ")
+                order_item = (session.query(Orders).filter(Orders.id == order_obj)).first()
+                self.handle_order(order_item, "Modifying Exiting Order Number")
+            elif choice == "list orders":
+                for order in self.orders:
+                    print(f"{order.id}. {order.ordered_at}")
+                    for add_drink in self.add_drinks:
+                        if add_drink.order_number == order.id:
+                            print(f"{add_drink.drink_name}") 
+            elif choice == "delete":
+                print(Orders)
+                self.delete_item(Orders)       
+            elif choice == "exit":
+                exit = True
 
+
+    def new_order(self):
         new_order = Orders(total_price = 0)
         session.add(new_order)
         session.commit()
+        self.handle_order(new_order, "Serving New Order Number")
+
+    def handle_order(self, new_order, heading):
     
         print(' ')
-        print(f'***** Welcome To The Coffee Shop {self.name} *****')
+        print(f'***** {heading} {new_order.id} *****')
         print(' ')
         exit = False
         while exit == False:
@@ -37,23 +65,25 @@ class CLI:
             query.update({Orders.total_price: price_total})
             session.commit()
 
-            choice = input("Type 'list orders', 'list drinks', 'add', 'modify', or 'delete': ")
-            if choice == "list drinks":
+            choice = input("Type 'list items', 'show menu', 'add', 'modify', or 'delete': ")
+            if choice == "show menu":
                 for drink in self.drinks:
                     print(f"{drink.name}: {drink.description}")
-            elif choice == "list orders":
+            elif choice == "list items":
                 for order in self.orders:
-                    print(f"{order.id}. {order.ordered_at}")
-                    for add_drink in self.add_drinks:
-                        if add_drink.order_number == order.id:
-                            print(f"{add_drink.drink_name}")  
+                    if order.id == new_order.id:
+                        print(f"{order.id}. {order.ordered_at}")
+                        drink_list = session.query(Add_Drinks).filter(Add_Drinks.order_number == new_order.id)
+                        for add_drink in drink_list:
+                            print(f"{add_drink.drink_name}") 
+                        print(f"The current total is: ${price_total} ")
             elif choice == "add":
                 self.add_item(new_order)
                 print("Your item has been added!")
             elif choice == "modify":
                 self.modify_item()
             elif choice == "delete":
-                self.delete_item()
+                self.delete_item(Add_Drinks)
             else:
                 choice == "exit"
                 exit = True
@@ -122,17 +152,16 @@ class CLI:
         first_query.update({Add_Drinks.size_price: new_price})
         session.commit()
 
-
-    def delete_item(self):
-        selection = input("Item ID: ")
-
-        query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)        
-
+    def delete_item(self, query_type):
+        selection = input("ID: ")
+        query = session.query(query_type).filter(query_type.id == selection)  
         doomed_item = query.first()
         session.delete(doomed_item)
         session.commit()
+        string_var = "You have deleted the" if query_type == Add_Drinks else "You deleted order ID:"
+        print_var = doomed_item.drink_name if query_type == Add_Drinks else doomed_item.id
 
-        print(f"You have deleted the {doomed_item.drink_name}")
+        print(f"{string_var} {print_var} ")
 
     
     
