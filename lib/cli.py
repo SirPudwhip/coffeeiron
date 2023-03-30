@@ -48,11 +48,7 @@ class CLI:
         self.drinks = [drink for drink in session.query(Drinks)]
         self.add_drinks = [add for add in session.query(Add_Drinks)]
         self.orders = [order for order in session.query(Orders)]
-        # self.customers = [customer for customer in session.query(Customers)]
-        # self.name = user_input
         self.start()
-
-    
 
     def start(self):
         exit = False
@@ -77,9 +73,6 @@ class CLI:
 
 
     def create_table_list(self):
-        
-        test_variable = "Hello There!"
-
         table = Table(title="Current Active Orders", header_style="bold black on white", style="bold black on white", show_lines=False)
         table.add_column("Order", justify="center", style="bold black on white", no_wrap=True)
         table.add_column("Size", justify="center", style="bold black on white")
@@ -99,8 +92,6 @@ class CLI:
 
         console = Console()
         console.print(table)
-
-
 
     def new_order(self):
         new_order = Orders(total_price = 0)
@@ -145,7 +136,6 @@ class CLI:
 
 
     def print_menu(self):
-
         table = Table(title="Coffee Menu", padding=1,header_style="bold black on #C59E6B", style="bold black on #C59E6B")
         table.add_column("Name", justify="center", style="bold black on #C59E6B")
         table.add_column("Description", justify="center", style="bold black on #C59E6B", no_wrap=True)
@@ -192,7 +182,6 @@ class CLI:
                         
 
     def set_price(self, drink, size):
-        
         query = session.query(Drinks).filter(Drinks.name == drink)
         searched_drink = query.first()
         if size == "medium":
@@ -263,9 +252,6 @@ class CLI:
         print(f"{string_var} {print_var} ")
 
 
-    
-    
-    
     
 
 if __name__ == '__main__':
