@@ -25,13 +25,13 @@ if __name__ == '__main__':
 
 
 
-    a_1 = Add_Drinks(drink_name = 1, size = "M", hot = True)
+    # a_1 = Add_Drinks(drink_name = 1, size = "M", hot = True)
 
-    o_1 = Orders(total_price = 10)
+    # o_1 = Orders(total_price = 10)
 
 
-    # session.query().delete()
-    session.add_all([d_8, d_7, d_4, d_5, d_9, d_3, d_10, d_6, d_2, d_1])
+    session.query(Orders).delete()
+    # session.add_all([d_8, d_7, d_4, d_5, d_9, d_3, d_10, d_6, d_2, d_1])
     session.commit()
     session.close()
 
