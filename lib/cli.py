@@ -162,7 +162,7 @@ class CLI:
     def checkout(self, price_total):
         print (f"Your total is : ${price_total}")
         payment = input("cash or credit? ")
-        if payment == "cash":
+        if payment.lower() == "cash":
             amount = input("Enter dollar amount: $")
             cash_back = int(amount) - price_total 
             print(f"Change due : ${cash_back}")
@@ -195,9 +195,9 @@ class CLI:
         
         query = session.query(Drinks).filter(Drinks.name == drink)
         searched_drink = query.first()
-        if size == "medium":
+        if size.lower() == "medium":
             return searched_drink.price + 1
-        elif size =="large":
+        elif size.lower() =="large":
             return searched_drink.price + 2
         else:
             return searched_drink.price
@@ -220,10 +220,10 @@ class CLI:
         value = input("New specification: ")
 
         first_query = session.query(Add_Drinks).filter(Add_Drinks.id == selection)
-        if field == "size":
+        if field.lower() == "size":
             first_query.update({Add_Drinks.size: value})
             print("Item modified")
-        elif field == "hot":
+        elif field.lower() == "hot":
             if value.lower() == "true":
                 temp = True
             elif value.lower() == "false":
@@ -232,7 +232,7 @@ class CLI:
                 print("Invalid value for hot field. Please enter 'true' or 'false'.")
             first_query.update({Add_Drinks.hot: temp})
             print("Item modified")
-        elif field == "drink name":
+        elif field.lower() == "drink name":
             first_query.update({Add_Drinks.drink_name: value})
             print("Item modified")
         else:
