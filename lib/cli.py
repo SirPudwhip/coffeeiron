@@ -204,7 +204,7 @@ class CLI:
         session.commit()
 
     def modify_item(self):
-        selection = input("Item ID: ")
+        selection = input("Drink #: ")
         field = input("Specification to update: ")
         value = input("New specification: ")
 
