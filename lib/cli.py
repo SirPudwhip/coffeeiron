@@ -20,7 +20,7 @@ Please select your desired function by number
 1. Create a new order
 2. See all open orders
 3. Modify an existing order
-4. Delete an order
+4. Complete an order
 5. Exit
 """
 
@@ -54,17 +54,17 @@ class CLI:
         exit = False
         while exit == False:
             console.print(md)
-            choice = input("Selection:")
+            choice = input("Selection: ")
             if choice == "1":
                 self.new_order()
             elif choice == "3":
                 self.create_table_list()
-                order_obj = input("What is the Order # you want to modify? ")
+                order_obj = input("Order #: ")
                 order_item = (session.query(Orders).filter(Orders.id == order_obj)).first()
                 self.handle_order(order_item, "Modifying Existing Order Number")
             elif choice == "2":
                 self.create_table_list()
-                input("Done?")
+                input("Done? ")
             elif choice == "4":
                 self.create_table_list()
                 self.delete_item(Orders)       
@@ -110,7 +110,7 @@ class CLI:
             query.update({Orders.total_price: price_total})
             session.commit()
 
-            choice = input("Selection:")
+            choice = input("Selection: ")
             if choice == "1":
                 self.print_menu()
                 input("Done?")
@@ -161,7 +161,7 @@ class CLI:
                 time.sleep(.02)
             print("Payment accepted!")
 
-        print("Thanks for visiting CoffeeIron! We hope to see you again soon")
+        print("Thanks for visiting CoffeeIron! Stick around... there's always an afterparty")
 
 
     def list_items(self, new_order):
@@ -212,16 +212,16 @@ class CLI:
         if field == "size":
             first_query.update({Add_Drinks.size: value})
             print("Item modified")
-        elif field == "hot":
-            if value.lower() == "true":
+        elif field == "temp":
+            if value.lower() == "hot":
                 temp = True
-            elif value.lower() == "false":
+            elif value.lower() == "iced":
                 temp = False
             else:
                 print("Invalid value for hot field. Please enter 'true' or 'false'.")
             first_query.update({Add_Drinks.hot: temp})
             print("Item modified")
-        elif field == "drink name":
+        elif field == "name":
             first_query.update({Add_Drinks.drink_name: value})
             print("Item modified")
         else:
@@ -246,7 +246,7 @@ class CLI:
             session.query(Add_Drinks).filter(Add_Drinks.order_number == selection).delete()
         session.commit()
 
-        string_var = "You have deleted the" if query_type == Add_Drinks else "You deleted order ID:"
+        string_var = "You have deleted the" if query_type == Add_Drinks else "Completed order #:"
         print_var = doomed_item.drink_name if query_type == Add_Drinks else doomed_item.id
 
         print(f"{string_var} {print_var} ")
